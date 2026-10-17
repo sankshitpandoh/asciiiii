@@ -10,7 +10,7 @@
  *
  * Attributes: piece, options (JSON), src, cols, rows, charset, color, mono, invert, brightness,
  *             contrast, gamma, dither, aspect, animate (none|typewriter|flicker|wave|scan),
- *             fps, speed, loop, font-size, fg, bg, alt, motion="always"
+ *             fps, speed, loop, font-size, fg, bg, alt, motion ("always" | "off")
  */
 
 import { DEFAULTS, artFromLines, resolveCharset, asciify, computeGrid } from './asciify.js';
@@ -85,6 +85,7 @@ export class AsciiArtElement extends HTMLElement {
     const style = document.createElement('style');
     style.textContent = STYLE;
     this.#pre = document.createElement('pre');
+    this.#pre.setAttribute('part', 'art'); // style from outside with ascii-art::part(art)
     this.#pre.setAttribute('role', 'img');
     root.append(style, this.#pre);
   }
@@ -454,8 +455,10 @@ export class AsciiArtElement extends HTMLElement {
   }
 
   #motionAllowed() {
+    const motion = this.getAttribute('motion');
+    if (motion === 'off') return false;
     const reduce = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    return !reduce || this.getAttribute('motion') === 'always';
+    return !reduce || motion === 'always';
   }
 
   #render(rebuild = false) {

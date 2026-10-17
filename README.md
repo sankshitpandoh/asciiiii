@@ -83,6 +83,7 @@ Works in plain HTML, React, Vue, Svelte, Astro… it is a standard custom elemen
 | `speed` | `1` | Effect speed multiplier |
 | `loop` | off | Restart `typewriter` when finished |
 | `motion="always"` | – | Animate even under `prefers-reduced-motion` (otherwise the first frame is shown) |
+| `motion="off"` | – | Never animate: show the first frame (for a site-wide pause control) |
 | `font-size`, `fg`, `bg` | – | Shortcuts for the CSS variables below |
 | `alt` | piece name / `ASCII art` | Accessible label |
 
@@ -98,6 +99,9 @@ ascii-art {
   --ascii-font: "JetBrains Mono", monospace;
 }
 ```
+
+The inner `<pre>` is exposed as a part, so `ascii-art::part(art) { overflow: hidden; }` and
+similar rules work from your own stylesheet.
 
 ### React, Vue, Svelte, Astro
 

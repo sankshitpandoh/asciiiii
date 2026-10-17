@@ -4,266 +4,488 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>asciiiii — photos, GIFs and videos as embeddable ASCII art</title>
-  <meta name="description" content="Upload a photo, GIF or video and get ASCII art you can paste into any website as one tag. 129 ready-made animated pieces included. Runs entirely in your browser." />
-  <meta name="color-scheme" content="light" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f5f8f1'/%3E%3Crect y='0' width='64' height='16' fill='%23dfe9d8'/%3E%3Crect y='32' width='64' height='16' fill='%23dfe9d8'/%3E%3Ctext x='32' y='46' font-family='monospace' font-size='36' font-weight='600' text-anchor='middle' fill='%231c261f'%3E@%3C/text%3E%3C/svg%3E" />
+  <meta name="description" content="Turn a photo, GIF or video into ASCII art in your browser, download it, or embed it with one tag. 129 animated ASCII pieces included. Nothing is uploaded." />
+  <meta name="theme-color" content="#1a0b2e" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fffb96'/%3E%3Cstop offset='.55' stop-color='%23ff71ce'/%3E%3Cstop offset='1' stop-color='%234b1fa8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' fill='%231a0b2e'/%3E%3Ccircle cx='32' cy='30' r='20' fill='url(%23g)'/%3E%3Crect y='40' width='64' height='3' fill='%231a0b2e'/%3E%3Crect y='46' width='64' height='4' fill='%231a0b2e'/%3E%3Ctext x='32' y='38' font-family='monospace' font-size='26' font-weight='700' text-anchor='middle' fill='%231a0b2e'%3E@%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=VT323&display=swap" />
+  <!-- katakana subtitles: only the glyphs used on this page are downloaded -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@700&display=swap&text=%E3%82%A2%E3%82%A4%E3%82%A6%E3%82%A8%E3%82%AD%E3%82%AE%E3%82%AF%E3%82%B0%E3%82%B7%E3%82%B9%E3%82%BF%E3%83%88%E3%83%89%E3%83%8A%E3%83%94%E3%83%97%E3%83%9D%E3%83%9E%E3%83%9F%E3%83%A3%E3%83%A9%E3%83%AA%E3%83%AC%E3%83%B3%E3%83%BB%E3%83%BC%E5%A4%89%E6%8F%9B" />
   <link rel="stylesheet" href="./demo/styles.css" />
 </head>
 <body>
-  <div class="sheet">
-    <header class="masthead">
-      <h1 class="sr-only">asciiiii</h1>
-      <ascii-art class="banner" piece="big-text" options='{"text":"ASCIIIII"}' mono rows="5" cols="46" alt="asciiiii, printed in block letters"></ascii-art>
-      <div class="masthead-row">
-        <p class="lede">Upload a photo, GIF or video and get ASCII art you can paste into any website as one tag. 129 ready-made animations included. Everything runs in your browser; nothing is uploaded.</p>
-        <nav class="site-nav" aria-label="Site">
-          <a href="#gallery">Gallery</a>
-          <a href="#how">Embedding</a>
-          <a href="https://github.com/sankshitpandoh/asciiiii" target="_blank" rel="noopener">GitHub</a>
-        </nav>
+  <a class="skip" href="#app">Skip to the converter</a>
+
+  <!-- the wallpaper sits behind the whole page -->
+  <div class="wallpaper" aria-hidden="true">
+    <div class="stars"></div>
+    <div class="sun"></div>
+    <div class="horizon-glow"></div>
+    <div class="floor"><div class="floor-plane"></div></div>
+    <svg class="palm palm-left" viewBox="0 0 220 420" focusable="false">
+      <path d="M118 420 C 110 330, 104 250, 120 170 C 126 140, 132 124, 138 112" fill="none" stroke="currentColor" stroke-width="13" stroke-linecap="round"/>
+      <path d="M112 380 l 14 -4 M108 340 l 15 -4 M107 300 l 15 -3 M109 262 l 15 -3 M113 224 l 14 -2 M118 188 l 13 -2" stroke="#2d1052" stroke-width="3"/>
+      <path d="M138 112 C 104 84, 58 84, 8 128 C 54 104, 96 104, 138 118 Z"/>
+      <path d="M138 112 C 110 120, 74 150, 52 214 C 84 166, 112 140, 140 120 Z"/>
+      <path d="M138 112 C 132 70, 104 34, 56 18 C 96 44, 120 74, 134 116 Z"/>
+      <path d="M138 112 C 152 64, 186 40, 214 40 C 184 58, 160 82, 142 118 Z"/>
+      <path d="M138 112 C 178 100, 206 120, 220 168 C 196 134, 170 122, 140 120 Z"/>
+      <path d="M138 112 C 156 136, 166 176, 160 232 C 152 186, 144 156, 134 122 Z"/>
+      <circle cx="134" cy="122" r="7"/><circle cx="146" cy="124" r="6"/>
+    </svg>
+    <svg class="palm palm-right" viewBox="0 0 220 420" focusable="false">
+      <path d="M118 420 C 110 330, 104 250, 120 170 C 126 140, 132 124, 138 112" fill="none" stroke="currentColor" stroke-width="13" stroke-linecap="round"/>
+      <path d="M138 112 C 104 84, 58 84, 8 128 C 54 104, 96 104, 138 118 Z"/>
+      <path d="M138 112 C 110 120, 74 150, 52 214 C 84 166, 112 140, 140 120 Z"/>
+      <path d="M138 112 C 132 70, 104 34, 56 18 C 96 44, 120 74, 134 116 Z"/>
+      <path d="M138 112 C 152 64, 186 40, 214 40 C 184 58, 160 82, 142 118 Z"/>
+      <path d="M138 112 C 178 100, 206 120, 220 168 C 196 134, 170 122, 140 120 Z"/>
+      <circle cx="134" cy="122" r="7"/>
+    </svg>
+  </div>
+
+  <!-- ═════════════ menu bar ═════════════ -->
+  <header class="menubar">
+    <a class="menubar-brand" href="#top" aria-label="asciiiii, back to top"><span class="logo" aria-hidden="true">◢◤</span> asciiiii<span class="ver">v0.1</span></a>
+    <nav class="menubar-nav" aria-label="Site">
+      <a href="#app">Convert</a>
+      <a href="#pieces">Pieces</a>
+      <a href="#docs">Docs</a>
+      <a href="https://github.com/sankshitpandoh/asciiiii" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+    <button id="motion-toggle" class="menubar-motion" type="button" aria-pressed="false">
+      <span class="motion-icon" aria-hidden="true">❚❚</span> <span class="motion-label">Pause motion</span>
+    </button>
+    <span class="menubar-clock" id="clock" aria-hidden="true">12:00 AM</span>
+  </header>
+
+  <!-- ═════════════ desktop / hero ═════════════ -->
+  <div class="desktop" id="top">
+
+    <div class="hero">
+      <div class="hero-copy">
+        <h1 class="wordmark" aria-label="asciiiii">
+          <span class="wordmark-glyphs" aria-hidden="true">▄▀▀▄ ▄▀▀▀ ▄▀▀▀ ▀█▀ ▀█▀ ▀█▀ ▀█▀ ▀█▀
+█▄▄█ ▀▀▀▄ █     █   █   █   █   █
+█  █ ▄▄▄▀ ▀▄▄▄ ▄█▄ ▄█▄ ▄█▄ ▄█▄ ▄█▄</span>
+        </h1>
+        <p class="kana" lang="ja" aria-hidden="true">アスキー・アート・マシン</p>
+        <div class="pitch-box">
+          <p class="pitch">Turn any photo, GIF or video into ASCII art, right in your browser. Download it, or put it on any website with one tag. Plus <strong>129 animated pieces</strong> ready to drop in.</p>
+          <div class="cta">
+            <a class="btn btn-primary btn-xl" href="#app">Make yours</a>
+            <a class="btn btn-xl" href="#pieces">Browse 129 pieces</a>
+          </div>
+          <div class="install">
+            <label class="install-label" for="install-code">Add it to a page</label>
+            <div class="install-row">
+              <input id="install-code" class="field-inset mono" readonly value='&lt;script type="module" src="https://cdn.jsdelivr.net/gh/sankshitpandoh/asciiiii@main/dist/ascii-art.min.js"&gt;&lt;/script&gt;' />
+              <button class="btn" type="button" data-copy-value="install-code">Copy</button>
+            </div>
+          </div>
+        </div>
       </div>
-    </header>
 
-    <hr class="tear" />
-
-    <main class="layout">
-      <!-- ───────────── controls ───────────── -->
-      <section class="panel controls" aria-label="Image and settings">
-        <h2>Your picture</h2>
-        <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Upload an image, GIF or video">
-          <input id="file" type="file" accept="image/*,video/*,.gif" hidden />
-          <div class="dropzone-inner">
-            <strong>Drop a photo, GIF or video</strong>
-            <span>or click to browse, or paste from the clipboard with <kbd>⌘V</kbd></span>
-          </div>
-          <img id="thumb" class="thumb" alt="" hidden />
-          <video id="thumb-video" class="thumb" muted loop playsinline hidden></video>
+      <section class="window hero-window" aria-labelledby="np-title">
+        <div class="titlebar">
+          <span class="titlebar-text"><span id="np-title">NOW_PLAYING.EXE</span><span class="titlebar-kana" lang="ja" aria-hidden="true">ナウ・プレイング</span></span>
+          <span class="titlebar-controls" aria-hidden="true"><i>_</i><i>□</i><i>×</i></span>
         </div>
-
-        <div class="row url-row">
-          <input id="url" type="url" placeholder="or paste an image URL" aria-label="Image URL" />
-          <button id="load-url" class="btn">Load</button>
-        </div>
-
-        <div class="samples">
-          <span class="label">Try a sample</span>
-          <button class="chip" data-sample="portrait">Portrait</button>
-          <button class="chip" data-sample="planet">Planet</button>
-          <button class="chip" data-sample="waves">Waves</button>
-          <button class="chip" data-sample="logo">Logo</button>
-          <button class="chip" data-sample="motion">Motion (video)</button>
-        </div>
-
-        <fieldset class="group">
-          <legend>Conversion</legend>
-          <label class="field">
-            <span>Width <output id="cols-out">80</output> columns</span>
-            <input id="cols" type="range" min="20" max="240" step="2" value="80" />
-          </label>
-          <label class="field">
-            <span>Character set</span>
-            <select id="charset">
-              <option value="standard">Standard  .:-=+*#%@</option>
-              <option value="detailed">Detailed, 70 glyphs</option>
-              <option value="blocks">Blocks ░▒▓█</option>
-              <option value="minimal">Minimal .oO@</option>
-              <option value="binary">Binary 01</option>
-              <option value="dots">Dots ·∙•●</option>
-              <option value="slashes">Slashes -/|\#</option>
-              <option value="letters">Letters</option>
-              <option value="custom">Custom</option>
-            </select>
-          </label>
-          <label class="field" id="custom-field" hidden>
-            <span>Custom ramp, light to dark</span>
-            <input id="custom" type="text" value=" .oO@" spellcheck="false" />
-          </label>
-          <div class="toggles">
-            <label class="toggle"><input id="color" type="checkbox" /> <span>Colour</span></label>
-            <label class="toggle"><input id="invert" type="checkbox" /> <span>Print on paper (light background)</span></label>
-            <label class="toggle"><input id="dither" type="checkbox" /> <span>Dither</span></label>
+        <div class="window-body">
+          <div class="crt crt-hero">
+            <div class="fit" id="hero-fit">
+              <ascii-art id="hero-art" piece="synthwave" alt="Synthwave sunset over a scrolling grid, drawn in ASCII"></ascii-art>
+            </div>
           </div>
-          <label class="field">
-            <span>Brightness <output id="brightness-out">0</output></span>
-            <input id="brightness" type="range" min="-1" max="1" step="0.05" value="0" />
-          </label>
-          <label class="field">
-            <span>Contrast <output id="contrast-out">0</output></span>
-            <input id="contrast" type="range" min="-1" max="1" step="0.05" value="0" />
-          </label>
-          <label class="field">
-            <span>Gamma <output id="gamma-out">1</output></span>
-            <input id="gamma" type="range" min="0.3" max="3" step="0.05" value="1" />
-          </label>
-        </fieldset>
-
-        <fieldset class="group">
-          <legend>Display</legend>
-          <label class="field">
-            <span>Font size <output id="font-size-out">10</output>px</span>
-            <input id="font-size" type="range" min="4" max="20" step="1" value="10" />
-          </label>
-          <label class="field">
-            <span>Animation</span>
-            <select id="animate">
-              <option value="none">None</option>
-              <option value="flicker">Flicker</option>
-              <option value="wave">Wave</option>
-              <option value="scan">Scanline</option>
-              <option value="typewriter">Typewriter</option>
-            </select>
-          </label>
-          <label class="field">
-            <span>Frame rate <output id="fps-out">12</output> fps</span>
-            <input id="fps" type="range" min="2" max="30" step="1" value="12" />
-          </label>
-          <div class="colors">
-            <label class="color-field"><span>Text</span><input id="fg" type="color" value="#e4ecdf" /></label>
-            <label class="color-field"><span>Background</span><input id="bg" type="color" value="#0f1512" /></label>
-            <button id="reset" class="btn btn-ghost" type="button">Reset settings</button>
+          <div class="np-controls">
+            <button class="btn btn-icon" id="np-prev" type="button" aria-label="Previous piece">◀</button>
+            <p class="np-name" aria-live="polite"><span class="np-file" id="np-name">synthwave</span><span class="np-ext">.art</span></p>
+            <button class="btn btn-icon" id="np-next" type="button" aria-label="Next piece">▶</button>
+            <button class="btn" id="np-copy" type="button">Copy tag</button>
           </div>
-        </fieldset>
+        </div>
       </section>
 
-      <!-- ───────────── preview + export ───────────── -->
-      <section class="panel output" aria-label="Preview and export">
-        <h2>Result</h2>
-        <div class="preview-wrap" id="preview-wrap">
-          <ascii-art id="preview" alt="ASCII art preview"></ascii-art>
-          <div id="empty" class="empty">
-            <p>Your ASCII art prints here.</p>
-            <p class="muted">Drop a picture or pick a sample to begin.</p>
+      <ul class="stickers" aria-label="Highlights">
+        <li class="sticker s1">Nothing uploaded</li>
+        <li class="sticker s2">No sign-up</li>
+        <li class="sticker s3">Free + MIT</li>
+      </ul>
+      <ul class="sr-only" aria-label="Facts">
+        <li>MIT licensed, no dependencies</li>
+        <li>36 kB gzipped, 11 kB without pieces</li>
+        <li>Animations pause off-screen and respect reduced motion</li>
+        <li>Works in React, Vue, Svelte and Astro</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="ticker" aria-hidden="true"><div class="ticker-track" id="ticker"></div></div>
+
+  <main>
+    <!-- ═════════════ ASCII.EXE: the converter ═════════════ -->
+    <section class="window app-window" id="app" aria-labelledby="app-title">
+      <div class="titlebar">
+        <span class="titlebar-text"><h2 id="app-title">ASCII.EXE<span class="sr-only">, the converter</span></h2><span class="titlebar-kana" lang="ja" aria-hidden="true">アスキー変換</span></span>
+        <span class="titlebar-controls"><button class="tb-min" type="button" aria-expanded="true" aria-label="Minimize">_</button><i aria-hidden="true">□</i><i aria-hidden="true">×</i></span>
+      </div>
+      <div class="window-body app-body">
+        <!-- the result comes first -->
+        <div class="stage">
+          <div class="crt preview-wrap" id="preview-wrap">
+            <ascii-art id="preview" alt="ASCII art preview"></ascii-art>
+            <div id="empty" class="empty">
+              <p>Your ASCII art appears here.</p>
+              <p class="dim">Choose a picture or try a sample.</p>
+            </div>
+          </div>
+          <div class="statusbar" id="stats" hidden>
+            <span>Grid <b id="stat-size"></b></span>
+            <span><b id="stat-chars"></b></span>
+            <span>Embed <b id="stat-bytes"></b></span>
+          </div>
+          <div class="save-row" id="save-row" hidden>
+            <button class="btn btn-primary btn-lg" id="dl-png" type="button">Download PNG</button>
+            <button class="btn btn-lg" id="dl-video" type="button" hidden>Download video</button>
+            <button class="btn btn-lg" type="button" data-copy="code-text">Copy as text</button>
+            <a class="btn btn-lg" href="#export">Embed on a site</a>
           </div>
         </div>
-        <div class="stats" id="stats" hidden>
-          <span>grid <b id="stat-size"></b></span>
-          <span><b id="stat-chars"></b></span>
-          <span>embed <b id="stat-bytes"></b></span>
-        </div>
 
-        <div class="export" id="export" hidden>
-          <div class="tabs" role="tablist">
-            <button class="tab is-active" role="tab" data-tab="embed">Embed</button>
-            <button class="tab" role="tab" data-tab="html">HTML only</button>
-            <button class="tab" role="tab" data-tab="url">From a URL</button>
-            <button class="tab" role="tab" data-tab="svg">SVG and PNG</button>
-            <button class="tab" role="tab" data-tab="text">Text</button>
-          </div>
+        <!-- the controls rail -->
+        <div class="rail">
+          <fieldset class="group">
+            <legend><span class="step">1</span> Pick a picture</legend>
+            <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-describedby="dropzone-hint">
+              <input id="file" type="file" accept="image/*,video/*,.gif" hidden />
+              <div class="dropzone-inner">
+                <strong class="for-fine">Drop a photo, GIF or video</strong>
+                <strong class="for-coarse">Tap to choose a photo or video</strong>
+                <span id="dropzone-hint" class="for-fine">or click to browse, or paste with <kbd>⌘V</kbd> / <kbd>Ctrl V</kbd></span>
+              </div>
+              <img id="thumb" class="thumb" alt="" hidden />
+              <video id="thumb-video" class="thumb" muted loop playsinline hidden></video>
+              <span class="replace" aria-hidden="true">Replace</span>
+            </div>
+            <div class="row">
+              <label class="btn btn-sm for-coarse" for="selfie">Take a selfie</label>
+              <input id="selfie" class="sr-only selfie-input" type="file" accept="image/*" capture="user" />
+            </div>
+            <div class="row url-row">
+              <input id="url" class="field-inset" type="url" placeholder="or paste an image URL" aria-label="Image URL" />
+              <button id="load-url" class="btn btn-sm" type="button">Load</button>
+            </div>
+            <div class="samples" role="group" aria-label="Samples">
+              <span class="label">Samples</span>
+              <button class="chip" type="button" data-sample="planet">Planet</button>
+              <button class="chip" type="button" data-sample="portrait">Portrait</button>
+              <button class="chip" type="button" data-sample="waves">Waves</button>
+              <button class="chip" type="button" data-sample="logo">Logo</button>
+              <button class="chip" type="button" data-sample="motion">Motion clip</button>
+            </div>
+          </fieldset>
 
-          <div class="tabpanel" data-panel="embed">
-            <p class="hint">Paste this anywhere. The art is baked in, so it looks the same on every device, and the small script adds the animation. Script served from
-              <select id="script-src" class="inline-select" aria-label="Script source">
-                <option value="cdn">jsDelivr</option>
-                <option value="site">this site</option>
+          <fieldset class="group">
+            <legend><span class="step">2</span> Pick a look</legend>
+            <div class="looks" id="looks" role="group" aria-label="Looks"></div>
+            <label class="field">
+              <span class="field-label">Detail <output id="cols-out">80</output> characters wide</span>
+              <input id="cols" type="range" min="20" max="240" step="2" value="80" />
+            </label>
+            <div class="field">
+              <span class="field-label" id="effect-label">Effect <span class="dim" id="effect-note">for photos</span></span>
+              <div class="chips effects" id="effects" role="group" aria-labelledby="effect-label">
+                <button class="chip is-active" type="button" data-effect="none" aria-pressed="true">None</button>
+                <button class="chip" type="button" data-effect="flicker" aria-pressed="false">Flicker</button>
+                <button class="chip" type="button" data-effect="wave" aria-pressed="false">Wave</button>
+                <button class="chip" type="button" data-effect="scan" aria-pressed="false">Scanline</button>
+                <button class="chip" type="button" data-effect="typewriter" aria-pressed="false">Typewriter</button>
+              </div>
+            </div>
+            <div class="toggles">
+              <label class="toggle"><input id="color" type="checkbox" /> <span>Colour</span></label>
+              <label class="toggle"><input id="invert" type="checkbox" /> <span>Light background</span></label>
+            </div>
+          </fieldset>
+
+          <details class="group advanced">
+            <summary><span class="step">3</span> Fine-tune <span class="dim">optional</span></summary>
+            <label class="field">
+              <span class="field-label">Characters</span>
+              <select id="charset" class="field-inset">
+                <option value="standard">Standard  .:-=+*#%@</option>
+                <option value="detailed">Detailed, 70 glyphs</option>
+                <option value="blocks">Blocks ░▒▓█</option>
+                <option value="minimal">Minimal .oO@</option>
+                <option value="binary">Binary 01</option>
+                <option value="dots">Dots ·∙•●</option>
+                <option value="slashes">Slashes -/|\#</option>
+                <option value="letters">Letters</option>
+                <option value="custom">Your own…</option>
               </select>
-            </p>
-            <div class="bake" id="bake" hidden>
-              <label>Frames <input id="bake-frames" type="number" min="2" max="240" value="36" /></label>
-              <label>fps <input id="bake-fps" type="number" min="1" max="30" value="12" /></label>
-              <button id="bake-run" class="btn">Bake again</button>
-              <span id="bake-info" class="muted"></span>
+            </label>
+            <label class="field" id="custom-field" hidden>
+              <span class="field-label">Your characters, light to dark</span>
+              <input id="custom" class="field-inset" type="text" value=" .oO@" spellcheck="false" />
+            </label>
+            <label class="toggle"><input id="dither" type="checkbox" /> <span>Dither (smoother gradients)</span></label>
+            <label class="field">
+              <span class="field-label">Brightness <output id="brightness-out">0</output></span>
+              <input id="brightness" type="range" min="-1" max="1" step="0.05" value="0" />
+            </label>
+            <label class="field">
+              <span class="field-label">Contrast <output id="contrast-out">0</output></span>
+              <input id="contrast" type="range" min="-1" max="1" step="0.05" value="0" />
+            </label>
+            <label class="field">
+              <span class="field-label">Midtones <output id="gamma-out">1</output></span>
+              <input id="gamma" type="range" min="0.3" max="3" step="0.05" value="1" />
+            </label>
+            <label class="field">
+              <span class="field-label">Exported text size <output id="font-size-out">10</output> px</span>
+              <input id="font-size" type="range" min="4" max="20" step="1" value="10" />
+            </label>
+            <label class="field">
+              <span class="field-label">Effect speed <output id="fps-out">12</output> frames a second</span>
+              <input id="fps" type="range" min="2" max="30" step="1" value="12" />
+            </label>
+            <div class="colors">
+              <label class="color-field"><span>Text</span><input id="fg" type="color" value="#f2e9ff" /></label>
+              <label class="color-field"><span>Background</span><input id="bg" type="color" value="#0b0618" /></label>
+              <button id="reset" class="btn btn-sm" type="button">Reset everything</button>
             </div>
-            <textarea id="code-embed" readonly spellcheck="false" rows="8" aria-label="Embed snippet"></textarea>
-            <div class="actions"><button class="btn btn-primary" data-copy="code-embed">Copy embed snippet</button></div>
-          </div>
-
-          <div class="tabpanel" data-panel="html" hidden>
-            <p class="hint">No JavaScript at all: a styled <code>&lt;pre&gt;</code> that works in any CMS, static page or email client that allows inline styles.</p>
-            <textarea id="code-html" readonly spellcheck="false" rows="8" aria-label="HTML snippet"></textarea>
-            <div class="actions"><button class="btn btn-primary" data-copy="code-html">Copy HTML</button></div>
-          </div>
-
-          <div class="tabpanel" data-panel="url" hidden>
-            <p class="hint">Point the tag at a picture or clip you already host and it converts in the visitor's browser with these settings. The host must allow cross-origin reads (CORS).</p>
-            <textarea id="code-url" readonly spellcheck="false" rows="6" aria-label="URL snippet"></textarea>
-            <div class="actions"><button class="btn btn-primary" data-copy="code-url">Copy tag</button></div>
-          </div>
-
-          <div class="tabpanel" data-panel="svg" hidden>
-            <p class="hint">A vector file for an <code>&lt;img&gt;</code>, a README or a design tool, or a 2× PNG.</p>
-            <textarea id="code-svg" readonly spellcheck="false" rows="6" aria-label="SVG source"></textarea>
-            <div class="actions">
-              <button class="btn btn-primary" data-copy="code-svg">Copy SVG</button>
-              <button class="btn" id="dl-svg">Download SVG</button>
-              <button class="btn" id="dl-png">Download PNG</button>
-            </div>
-          </div>
-
-          <div class="tabpanel" data-panel="text" hidden>
-            <p class="hint">Plain text for a terminal, a code block or a message.</p>
-            <textarea id="code-text" readonly spellcheck="false" rows="8" aria-label="Plain text"></textarea>
-            <div class="actions">
-              <button class="btn btn-primary" data-copy="code-text">Copy text</button>
-              <button class="btn" id="dl-txt">Download TXT</button>
-            </div>
-          </div>
+          </details>
         </div>
-      </section>
-    </main>
-
-    <hr class="tear" />
-
-    <section id="gallery" class="gallery">
-      <div class="gallery-head">
-        <h2>Ready-made pieces <span id="piece-count" class="muted"></span></h2>
-        <p class="muted">Animations you can drop in as <code>&lt;ascii-art piece="donut"&gt;</code>. Each one is a short program drawing on a character grid; the code for all of them is in the repository.</p>
-        <div class="chips" id="gallery-filters" role="group" aria-label="Filter by category"></div>
       </div>
-      <div class="gallery-grid" id="gallery-grid"></div>
     </section>
 
-    <hr class="tear" />
+    <!-- ═════════════ EXPORT.DLL: developer exports ═════════════ -->
+    <section class="window export-window" id="export" aria-labelledby="export-title">
+      <div class="titlebar">
+        <span class="titlebar-text"><h2 id="export-title">EXPORT.DLL<span class="sr-only">, code for your site</span></h2><span class="titlebar-kana" lang="ja" aria-hidden="true">エクスポート</span></span>
+        <span class="titlebar-controls"><button class="tb-min" type="button" aria-expanded="true" aria-label="Minimize">_</button><i aria-hidden="true">□</i><i aria-hidden="true">×</i></span>
+      </div>
+      <div class="window-body">
+        <p class="window-intro">Put the art from <a href="#app">ASCII.EXE</a> on a website. Each format below updates as you tune.</p>
+        <div id="export-empty" class="dim">Pick a picture first.</div>
+        <div class="export" id="export-ui" hidden>
+          <div class="tabs" role="tablist" aria-label="Export format">
+            <button class="tab" role="tab" id="tab-embed" aria-controls="panel-embed" aria-selected="true" tabindex="0">Embed</button>
+            <button class="tab" role="tab" id="tab-html" aria-controls="panel-html" aria-selected="false" tabindex="-1">HTML only</button>
+            <button class="tab" role="tab" id="tab-url" aria-controls="panel-url" aria-selected="false" tabindex="-1">From a URL</button>
+            <button class="tab" role="tab" id="tab-svg" aria-controls="panel-svg" aria-selected="false" tabindex="-1">SVG</button>
+            <button class="tab" role="tab" id="tab-text" aria-controls="panel-text" aria-selected="false" tabindex="-1">Text</button>
+          </div>
 
-    <section id="how" class="how">
-      <h2>How embedding works</h2>
-      <ol class="procedure">
-        <li>
-          <div>
+          <div class="tabpanel" role="tabpanel" id="panel-embed" aria-labelledby="tab-embed" tabindex="0">
+            <p class="hint">Paste this anywhere. The art is baked in, so it looks the same on every device; the script adds the animation.</p>
+            <label class="inline-field">Load the script from
+              <select id="script-src" class="field-inset inline-select">
+                <option value="cdn">jsDelivr CDN</option>
+                <option value="site">this site</option>
+              </select>
+            </label>
+            <div class="bake" id="bake" hidden>
+              <label>Frames <input id="bake-frames" class="field-inset" type="number" min="2" max="240" value="36" /></label>
+              <label>Frames a second <input id="bake-fps" class="field-inset" type="number" min="1" max="30" value="12" /></label>
+              <button id="bake-run" class="btn btn-sm" type="button">Capture frames again</button>
+              <span id="bake-info" class="dim"></span>
+            </div>
+            <textarea id="code-embed" class="field-inset" readonly spellcheck="false" rows="7" aria-label="Embed snippet"></textarea>
+            <div class="actions"><button class="btn btn-primary" type="button" data-copy="code-embed">Copy embed snippet</button></div>
+          </div>
+
+          <div class="tabpanel" role="tabpanel" id="panel-html" aria-labelledby="tab-html" tabindex="0" hidden>
+            <p class="hint">No JavaScript at all: a styled <code>&lt;pre&gt;</code> for any CMS, static page or email that allows inline styles.</p>
+            <textarea id="code-html" class="field-inset" readonly spellcheck="false" rows="7" aria-label="HTML snippet"></textarea>
+            <div class="actions"><button class="btn btn-primary" type="button" data-copy="code-html">Copy HTML</button></div>
+          </div>
+
+          <div class="tabpanel" role="tabpanel" id="panel-url" aria-labelledby="tab-url" tabindex="0" hidden>
+            <p class="hint">Point the tag at a picture or clip you already host and it converts in the visitor's browser with these settings. The host must allow cross-origin reads (CORS).</p>
+            <textarea id="code-url" class="field-inset" readonly spellcheck="false" rows="5" aria-label="URL snippet"></textarea>
+            <div class="actions"><button class="btn btn-primary" type="button" data-copy="code-url">Copy tag</button></div>
+          </div>
+
+          <div class="tabpanel" role="tabpanel" id="panel-svg" aria-labelledby="tab-svg" tabindex="0" hidden>
+            <p class="hint">A vector file for an <code>&lt;img&gt;</code>, a README or a design tool.</p>
+            <textarea id="code-svg" class="field-inset" readonly spellcheck="false" rows="5" aria-label="SVG source"></textarea>
+            <div class="actions">
+              <button class="btn btn-primary" type="button" data-copy="code-svg">Copy SVG</button>
+              <button class="btn" id="dl-svg" type="button">Download SVG</button>
+            </div>
+          </div>
+
+          <div class="tabpanel" role="tabpanel" id="panel-text" aria-labelledby="tab-text" tabindex="0" hidden>
+            <p class="hint">Plain text for a terminal, a code block or a message.</p>
+            <textarea id="code-text" class="field-inset" readonly spellcheck="false" rows="7" aria-label="Plain text"></textarea>
+            <div class="actions">
+              <button class="btn btn-primary" type="button" data-copy="code-text">Copy text</button>
+              <button class="btn" id="dl-txt" type="button">Download TXT</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════ C:\PIECES\ — the gallery ═════════════ -->
+    <section class="window explorer" id="pieces" aria-labelledby="pieces-title">
+      <div class="titlebar">
+        <span class="titlebar-text"><h2 id="pieces-title">C:\PIECES\<span class="sr-only">, the gallery</span></h2><span class="titlebar-kana" lang="ja" aria-hidden="true">ピース・ギャラリー</span></span>
+        <span class="titlebar-controls"><button class="tb-min" type="button" aria-expanded="true" aria-label="Minimize">_</button><i aria-hidden="true">□</i><i aria-hidden="true">×</i></span>
+      </div>
+      <div class="window-body">
+        <p class="window-intro"><span id="piece-count">129</span> animations, each a short program drawing on a character grid. Open one to preview it on your colours, copy its tag, or save it as a video.</p>
+        <div class="toolbar">
+          <label class="addressbar field-inset">
+            <span class="address-prefix" aria-hidden="true">C:\PIECES\<span id="address-cat"></span></span>
+            <span class="sr-only">Search pieces</span>
+            <input id="piece-search" type="search" placeholder="search: donut, rain, cat…" autocomplete="off" spellcheck="false" />
+          </label>
+        </div>
+        <div class="chips chip-scroll" id="gallery-filters" role="group" aria-label="Filter by category"></div>
+        <p class="sr-only" id="gallery-status" aria-live="polite"></p>
+        <div class="gallery-grid" id="gallery-grid"></div>
+        <div class="gallery-more"><button class="btn btn-lg" id="gallery-more" type="button">Show more</button></div>
+      </div>
+    </section>
+
+    <!-- ═════════════ README.TXT — the docs ═════════════ -->
+    <section class="window notepad" id="docs" aria-labelledby="docs-title">
+      <div class="titlebar">
+        <span class="titlebar-text"><h2 id="docs-title">README.TXT<span class="sr-only">, the docs</span></h2><span class="titlebar-kana" lang="ja" aria-hidden="true">リードミー</span></span>
+        <span class="titlebar-controls"><button class="tb-min" type="button" aria-expanded="true" aria-label="Minimize">_</button><i aria-hidden="true">□</i><i aria-hidden="true">×</i></span>
+      </div>
+      <div class="notepad-menu" aria-hidden="true"><span>File</span><span>Edit</span><span>Search</span><span>Help</span></div>
+      <div class="window-body paper">
+        <ol class="procedure">
+          <li>
             <h3>Load the script once per page</h3>
-<pre><code>&lt;script type="module"
+            <div class="code-block">
+<pre><code id="doc-cdn">&lt;script type="module"
   src="https://cdn.jsdelivr.net/gh/sankshitpandoh/asciiiii@main/dist/ascii-art.min.js"&gt;
 &lt;/script&gt;</code></pre>
-            <p>About 100 kB with every piece, or 30 kB for the core build without them.</p>
-          </div>
-        </li>
-        <li>
-          <div>
+              <button class="btn btn-sm copy-code" type="button" data-copy-code="doc-cdn">Copy</button>
+            </div>
+            <p>Or install it from GitHub and import it in your bundle:</p>
+            <div class="code-block">
+<pre><code id="doc-npm">npm i github:sankshitpandoh/asciiiii
+
+import 'asciiiii';</code></pre>
+              <button class="btn btn-sm copy-code" type="button" data-copy-code="doc-npm">Copy</button>
+            </div>
+            <p>36 kB gzipped with every piece. Only need conversion? <code>dist/ascii-art.core.min.js</code> is 11 kB.</p>
+          </li>
+          <li>
             <h3>Place a tag</h3>
-<pre><code>&lt;ascii-art piece="donut"&gt;&lt;/ascii-art&gt;
+            <div class="code-block">
+<pre><code id="doc-tags">&lt;ascii-art piece="donut"&gt;&lt;/ascii-art&gt;
 
 &lt;ascii-art src="/me.jpg" cols="90" color animate="flicker"&gt;&lt;/ascii-art&gt;
 &lt;ascii-art src="/clip.mp4" cols="90" fps="12"&gt;&lt;/ascii-art&gt;
 
 &lt;ascii-art animate="wave"&gt;
-  &lt;script type="application/json"&gt;{ pasted from the Embed tab }&lt;/script&gt;
+  &lt;script type="application/json"&gt;{ pasted from EXPORT.DLL }&lt;/script&gt;
 &lt;/ascii-art&gt;</code></pre>
-            <p>Pictures and clips convert in the visitor's browser. Pasted art needs no media file at all.</p>
-          </div>
-        </li>
-        <li>
-          <div>
+              <button class="btn btn-sm copy-code" type="button" data-copy-code="doc-tags">Copy</button>
+            </div>
+            <p>Pictures and clips convert in the visitor's browser. Pasted art needs no media file at all. In React, Vue, Svelte or Astro, import the script once on the client and use the same tag; pieces render nothing on the server and start on mount.</p>
+          </li>
+          <li>
             <h3>Style it like text</h3>
-<pre><code>ascii-art {
+            <div class="code-block">
+<pre><code id="doc-css">ascii-art {
   --ascii-font-size: 8px;
-  --ascii-fg: #1c261f;
+  --ascii-fg: #ff71ce;
   --ascii-bg: transparent;
 }</code></pre>
-            <p>Animations pause off-screen and respect <code>prefers-reduced-motion</code>. React, Vue, Svelte and Astro can use the same tag; there is also a JavaScript API, <code>import { imageToAscii } from 'asciiiii'</code>.</p>
-          </div>
-        </li>
-      </ol>
+              <button class="btn btn-sm copy-code" type="button" data-copy-code="doc-css">Copy</button>
+            </div>
+          </li>
+        </ol>
+
+        <h3 class="doc-h">Attributes</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Attribute</th><th scope="col">What it does</th></tr></thead>
+            <tbody>
+              <tr><td><code>piece</code></td><td>A built-in piece by name, like <code>donut</code>. <code>options</code> takes JSON overrides.</td></tr>
+              <tr><td><code>src</code></td><td>An image, GIF or video URL to convert in the browser.</td></tr>
+              <tr><td><code>cols</code>, <code>rows</code></td><td>Characters per row (default 80), and a row limit.</td></tr>
+              <tr><td><code>charset</code></td><td><code>standard</code>, <code>detailed</code>, <code>blocks</code>, <code>minimal</code>, <code>binary</code>, <code>dots</code>, <code>slashes</code>, <code>letters</code>, or your own ramp.</td></tr>
+              <tr><td><code>color</code>, <code>mono</code>, <code>invert</code></td><td>Keep colour, draw in one ink, or prepare for light backgrounds.</td></tr>
+              <tr><td><code>animate</code>, <code>fps</code></td><td>Photo effects (<code>flicker</code>, <code>wave</code>, <code>scan</code>, <code>typewriter</code>) and frame rate.</td></tr>
+              <tr><td><code>font-size</code>, <code>fg</code>, <code>bg</code></td><td>Shortcuts for the CSS variables.</td></tr>
+              <tr><td><code>alt</code></td><td>What screen readers announce.</td></tr>
+              <tr><td><code>motion</code></td><td><code>always</code> animates even with reduced motion on; <code>off</code> always shows a still frame.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="doc-h">Performance and accessibility</h3>
+        <ul class="facts">
+          <li>Animations stop while off-screen, so a page full of pieces stays cheap.</li>
+          <li>With <code>prefers-reduced-motion</code> on, pieces show their first frame and effects stay still.</li>
+          <li>Each element is announced as one image with its <code>alt</code> text, not as hundreds of characters.</li>
+          <li>No dependencies, no network calls except the media you point it at.</li>
+        </ul>
+      </div>
     </section>
+  </main>
 
-    <hr class="tear" />
+  <!-- ═════════════ the piece viewer ═════════════ -->
+  <dialog class="window viewer" id="viewer" aria-labelledby="viewer-title">
+    <div class="titlebar">
+      <span class="titlebar-text"><h2 id="viewer-title">donut.art</h2></span>
+      <button class="titlebar-close" id="viewer-close" type="button" aria-label="Close">×</button>
+    </div>
+    <div class="window-body viewer-body">
+      <div class="crt viewer-stage" id="viewer-stage">
+        <div class="fit" id="viewer-fit"></div>
+      </div>
+      <div class="viewer-side">
+        <div class="field">
+          <span class="field-label" id="viewer-bg-label">Background</span>
+          <div class="chips" role="group" aria-labelledby="viewer-bg-label" id="viewer-bgs">
+            <button class="chip is-active" type="button" data-bg="#0b0618" data-fg="#f2e9ff" aria-pressed="true">Night</button>
+            <button class="chip" type="button" data-bg="#ffffff" data-fg="#1a0b2e" aria-pressed="false">White page</button>
+            <button class="chip" type="button" data-bg="#2d1052" data-fg="#ff71ce" aria-pressed="false">Vapor</button>
+          </div>
+        </div>
+        <label class="toggle"><input id="viewer-mono" type="checkbox" /> <span>One colour only</span></label>
+        <textarea id="viewer-code" class="field-inset" readonly spellcheck="false" rows="4" aria-label="Tag for this piece"></textarea>
+        <div class="actions">
+          <button class="btn btn-primary" type="button" data-copy="viewer-code">Copy tag</button>
+          <button class="btn" type="button" id="viewer-video">Save as video</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
 
-    <footer class="site-footer">
-      <p>MIT licence. Source on <a href="https://github.com/sankshitpandoh/asciiiii" target="_blank" rel="noopener">GitHub</a>.</p>
-    </footer>
+  <!-- ═════════════ taskbar ═════════════ -->
+  <footer class="taskbar">
+    <a class="start" href="#top"><span class="logo" aria-hidden="true">◢◤</span> Start<span class="start-kana" lang="ja" aria-hidden="true">スタート</span></a>
+    <nav class="tasks" aria-label="Windows">
+      <a href="#app" data-task="app">ASCII.EXE</a>
+      <a href="#export" data-task="export">EXPORT.DLL</a>
+      <a href="#pieces" data-task="pieces">C:\PIECES\</a>
+      <a href="#docs" data-task="docs">README.TXT</a>
+    </nav>
+    <div class="tray">
+      <span>MIT licence</span>
+      <a href="https://github.com/sankshitpandoh/asciiiii" target="_blank" rel="noopener">Source on GitHub</a>
+    </div>
+  </footer>
+
+  <div class="screensaver" id="screensaver" hidden aria-hidden="true">
+    <div class="fit" id="screensaver-fit"></div>
+    <p class="screensaver-hint">SCREENSAVER.SCR <span id="screensaver-name"></span> — move the mouse or press a key</p>
   </div>
 
+  <div class="sr-only" id="live" aria-live="polite"></div>
   <script type="module" src="./demo/app.js"></script>
 </body>
 </html>
